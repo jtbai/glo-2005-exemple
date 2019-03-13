@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from json import loads
 import requests
 
@@ -16,7 +16,7 @@ def photo_de_chien():
     json_de_lapi = loads(reponse_api_photo_chien.text)
     json_de_lapi["message"]
 
-    return "<img src=" + json_de_lapi["message"] +">"
+    return render_template('image_animal.html', url =json_de_lapi["message"], animal = "chien" )
 
 
 application.run('0.0.0.0',8000)

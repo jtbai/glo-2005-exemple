@@ -8,6 +8,11 @@
 
 
 <img src={{ url | safe }}>
-
+<form action="/vote" method="POST">
+    <input type="hidden" name="image_url" value="{{ url | safe }}">
+    <input type="radio" name="vote_value" value="chien"> Chien </input>
+    <input type="radio" name="vote_value" value="loup"> Loup </input>
+    <input type="submit" value="voter">
+</form>
 </body>
 </html>

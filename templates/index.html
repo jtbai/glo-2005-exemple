@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application de vote pour canidés</title>
+</head>
+<body>
+
+<a href=/chien>Nouvelle Photo de chien</a><br>
+<h3> photo déjà indentifiées </h3><br>
+
+{% for image in images %}
+    <a href=/image/{{ image['image_id'] }} >{{ image['image_url'] }}</a><br>
+  {% endfor %}
+
+</body>
+</html>

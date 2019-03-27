@@ -9,7 +9,8 @@ vote_repository = VoteRepository()
 
 @application.route('/')
 def index():
-    return "<a href=/chien>photo de chien</a>"
+    images = vote_repository.get_images()
+    return render_template('index.html', images=images)
 
 @application.route('/chien')
 def photo_de_chien():
@@ -17,7 +18,7 @@ def photo_de_chien():
     json_de_lapi = loads(reponse_api_photo_chien.text)
     json_de_lapi["message"]
 
-    return render_template('image_animal.html', url =json_de_lapi["message"], animal = "chien" )
+    return render_template('vote_page.html', url =json_de_lapi["message"], animal = "chien" )
 
 @application.route("/vote", methods=["POST"])
 def vote():
@@ -38,4 +39,12 @@ def get_vote():
 
     return output
 
-application.run('0.0.0.0',8000)
+
+@application.route("/image/<image_id>", methods=["GET"])
+def get_photo(image_id):
+    information = vote_repository.get_image_information(image_id)
+    votes = vote_repository.get_votes_for_image(image_id)
+    return render_template("image_animal.html", url =information['image_url'], votes = votes, animal=information['animal'])
+
+
+application.run('0.0.0.0',8080)

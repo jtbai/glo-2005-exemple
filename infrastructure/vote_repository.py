@@ -4,8 +4,10 @@ import hashlib
 
 
 class VoteRepository:
-    MYSQL_URI = "localhost"
-    PORT = "1337"
+    # MYSQL_URI = "localhost"
+    # PORT = "1337"
+    MYSQL_URI = "ma_bd"
+    PORT = "3306"
     USERNAME = "root"
     PASSWORD = None
     DATABASE_NAME = "what_is_it"

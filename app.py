@@ -47,4 +47,4 @@ def get_photo(image_id):
     return render_template("image_animal.html", url =information['image_url'], votes = votes, animal=information['animal'])
 
 
-application.run('0.0.0.0',8080)
+application.run('0.0.0.0',80)

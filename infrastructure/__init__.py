@@ -1,0 +1,1 @@
+from infrastructure.vote_repository import VoteRepository

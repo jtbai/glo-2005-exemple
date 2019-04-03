@@ -6,16 +6,31 @@ import hashlib
 class VoteRepository:
     # MYSQL_URI = "localhost"
     # PORT = "1337"
-    MYSQL_URI = "ma_bd"
+    MYSQL_URI = "ma_db"
     PORT = "3306"
-    USERNAME = "root"
-    PASSWORD = None
+    # USERNAME = "root"
+    # PASSWORD = None
+    USERNAME = "web_voter"
+    PASSWORD = "lolk1234"
+
     DATABASE_NAME = "what_is_it"
 
     def __init__(self):
-        self.connector = connect(host=self.MYSQL_URI, port=self.PORT, user=self.USERNAME, password=self.PASSWORD, database=self.DATABASE_NAME)
+        self.connector = None
+        try:
+            self.__connect()
+        except Exception as exception:
+            print(exception)
+
+    def __connect(self):
+        self.connector = connect(host=self.MYSQL_URI, port=self.PORT, user=self.USERNAME, password=self.PASSWORD,
+                                 database=self.DATABASE_NAME)
+    def __verify_connection(self):
+        if self.connector is None:
+            self.__connect()
 
     def insert_vote(self, vote_dto):
+        self.__verify_connection()
         add_vote_request = ("INSERT INTO vote "
                         "(image_url, value, image_id)"
                         "VALUES (%s, %s, %s)")
@@ -27,6 +42,7 @@ class VoteRepository:
         self.connector.commit()
 
     def get_votes(self, animal):
+        self.__verify_connection()
         select_animal = ("SELECT image_url FROM vote "
                          "WHERE value = %s")
         vote_values = (animal,)
@@ -36,6 +52,7 @@ class VoteRepository:
         return [{'image_url':vote[0]} for vote in cursor]
 
     def get_images(self):
+        self.__verify_connection()
         select_query = "SELECT DISTINCT image_id, image_url FROM vote "
         cursor = self.connector.cursor()
         cursor.execute(select_query)
@@ -43,6 +60,7 @@ class VoteRepository:
         return [{'image_id': vote[0], 'image_url': vote[1]} for vote in cursor]
 
     def get_image_information(self, image_id):
+        self.__verify_connection()
         select_image = ("SELECT image_url, value FROM vote "
                          "WHERE image_id = %s LIMIT 0,1")
 
@@ -55,6 +73,7 @@ class VoteRepository:
 
 
     def get_votes_for_image(self, image_id):
+        self.__verify_connection()
         vote_query = ("SELECT value, count(value) FROM vote "
                          "WHERE image_id = %s GROUP BY value")
         select_values = (image_id,)
